@@ -11,9 +11,9 @@ def index(request):
 class GetIPAddresses(Endpoint):
 	def get(self, request):
 		return map(lambda x: {
-								'name':x['car_name'],
-								'ip':x['ip'],
-								'time':x['last_seen']
+								'name':x.get('car_name'),
+								'ip':x.get('ip'),
+								'time':x.get('time')
 							 }, IPAddress.get_most_recent())
 
 class AddIPAddress(Endpoint):

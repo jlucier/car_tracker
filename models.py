@@ -9,7 +9,15 @@ class IPAddress(models.Model):
 
 	@staticmethod
 	def get_most_recent():
-		return IPAddress.objects.values('car_name', 'ip').annotate(last_seen=models.Max('time'))
+		rows = IPAddress.objects.all().order_by('-time')
+		names = set()
+		ans = list()
+		for r in rows:
+			if r.car_name not in names:
+				names.add(r.car_name)
+				ans.append({'car_name':r.car_name, 'ip':r.ip, 'time':r.time})
+		return ans
+
 
 	def dump(self):
 		return {'name': self.car_name, 'ip': self.ip, 'time': self.time}
